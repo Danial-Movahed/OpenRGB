@@ -13,35 +13,31 @@
 
 #define NA              0xFFFFFFFF
 
-static unsigned int tkl_matrix_map[6][17] =
-    { {   8,  NA,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23, 24},
-      {  29,  30,  31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44, 45},
-      {  50,  51,  52,  53,  54,  55,  56,  57,  58,  59,  60,  61,  62,  63,  64,  65, 66},
-      {  71,  72,  73,  74,  75,  76,  77,  78,  79,  80,  81,  82,  84,  NA,  NA,  NA, NA},
-      {  93,  95,  96,  97,  98,  99, 100, 101, 102, 103, 104, 106,  NA,  NA,  NA, 107, NA},
-      { 113, 114, 115,  NA,  NA,  NA, 118,  NA,  NA,  NA,  NA, 121, 122, 123, 127, 128, 129}};
+static unsigned int tkl_matrix_map[6][16] =
+{
+    // Row 0 (Top row - function keys, etc.)
+    {  NA,   7,  10,  13,  16,  19,  NA,  NA,  NA,  NA,  NA,  NA,  NA,  NA,  NA,  NA },
+
+    // Row 1 (Number row)
+    {  NA,  25,  28,  31,  34,  37,  43,  46,  49,  52,  55,  61,  64,  67,  70,  NA },
+
+    // Row 2 (QWERTY row)
+    {  NA,  79,  82,  85,  88,  NA,  97, 100, 103, 106, 109, 115, 118, 121, 124,  NA },
+
+    // Row 3 (ASDF row)
+    {  NA, 133, 136, 139, 142,  NA, 151, 154, 157, 160, 163, 169, 172, 175, 178,  NA },
+
+    // Row 4 (ZXCV row)
+    {  NA, 187, 190, 193, 196,  NA, 205, 208, 211,  NA,  NA, 223, 226,  NA,  NA,  NA },
+
+    // Row 5 (Bottom row + arrows)
+    {  NA, 241, 244, 247, 250, 253, 277, 280, 283, 286, 289,  NA,  NA, 268, 271,  NA }
+};
 
 
 static const char *led_names_tkl[] =
 {
     KEY_EN_ESCAPE,
-    KEY_EN_F1,
-    KEY_EN_F2,
-    KEY_EN_F3,
-    KEY_EN_F4,
-    KEY_EN_F5,
-    KEY_EN_F6,
-    KEY_EN_F7,
-    KEY_EN_F8,
-    KEY_EN_F9,
-    KEY_EN_F10,
-    KEY_EN_F11,
-    KEY_EN_F12,
-    KEY_EN_PRINT_SCREEN,
-    KEY_EN_SCROLL_LOCK,
-    "Key: Pause",
-
-    KEY_EN_BACK_TICK,
     KEY_EN_1,
     KEY_EN_2,
     KEY_EN_3,
@@ -55,9 +51,7 @@ static const char *led_names_tkl[] =
     KEY_EN_MINUS,
     KEY_EN_EQUALS,
     KEY_EN_BACKSPACE,
-    KEY_EN_INSERT,
-    KEY_EN_HOME,
-    KEY_EN_PAGE_UP,
+    KEY_EN_DELETE,
 
     KEY_EN_TAB,
     KEY_EN_Q,
@@ -73,9 +67,7 @@ static const char *led_names_tkl[] =
     KEY_EN_LEFT_BRACKET,
     KEY_EN_RIGHT_BRACKET,
     KEY_EN_ANSI_BACK_SLASH,
-    KEY_EN_DELETE,
-    KEY_EN_END,
-    KEY_EN_PAGE_DOWN,
+    KEY_EN_BACK_TICK,
 
     KEY_EN_CAPS_LOCK,
     KEY_EN_A,
@@ -90,6 +82,7 @@ static const char *led_names_tkl[] =
     KEY_EN_SEMICOLON,
     KEY_EN_QUOTE,
     KEY_EN_ANSI_ENTER,
+    KEY_EN_PAGE_UP,
 
     KEY_EN_LEFT_SHIFT,
     KEY_EN_Z,
@@ -104,18 +97,18 @@ static const char *led_names_tkl[] =
     KEY_EN_FORWARD_SLASH,
     KEY_EN_RIGHT_SHIFT,
     KEY_EN_UP_ARROW,
+    KEY_EN_PAGE_DOWN,
 
     KEY_EN_LEFT_CONTROL,
     KEY_EN_LEFT_WINDOWS,
     KEY_EN_LEFT_ALT,
     KEY_EN_SPACE,
-    KEY_EN_RIGHT_CONTROL,
     KEY_EN_RIGHT_ALT,
-    KEY_EN_RIGHT_WINDOWS,
-    KEY_EN_RIGHT_FUNCTION,
+    "Key: Fn",
+    "Key: Fn2",
     KEY_EN_LEFT_ARROW,
     KEY_EN_DOWN_ARROW,
-    KEY_EN_RIGHT_ARROW,
+    KEY_EN_RIGHT_ARROW
 };
 
 /**------------------------------------------------------------------*\
@@ -170,12 +163,12 @@ void RGBController_SinowealthKeyboard::SetupZones()
 
     new_zone.name                   = ZONE_EN_KEYBOARD;
     new_zone.type                   = ZONE_TYPE_MATRIX;
-    new_zone.leds_min               = 86;
-    new_zone.leds_max               = 86;
-    new_zone.leds_count             = 86;
+    new_zone.leds_min               = 68;
+    new_zone.leds_max               = 68;
+    new_zone.leds_count             = 68;
     new_zone.matrix_map             = new matrix_map_type;
     new_zone.matrix_map->height     = 6;
-    new_zone.matrix_map->width      = 17;
+    new_zone.matrix_map->width      = 16;
     new_zone.matrix_map->map        = (unsigned int *)&tkl_matrix_map;
 
     zones.push_back(new_zone);
@@ -183,7 +176,7 @@ void RGBController_SinowealthKeyboard::SetupZones()
     /*---------------------------------------------------------*\
     | Set up LEDs                                               |
     \*---------------------------------------------------------*/
-    for(unsigned int led_idx = 0; led_idx < 86; led_idx++)
+    for(unsigned int led_idx = 0; led_idx < 68; led_idx++)
     {
         led new_led;
         new_led.name = led_names_tkl[led_idx];
@@ -220,12 +213,12 @@ void RGBController_SinowealthKeyboard::DeviceUpdateMode()
     unsigned int brightness  = BRIGHTNESS_FULL;
     RGBColor* selected_color = (modes[active_mode].color_mode == MODE_COLORS_NONE) ? 0 : &modes[active_mode].colors[0];
 
-    if(modes[active_mode].value == MODE_STATIC)
-    {
-        controller->SetStaticColor(selected_color);
-    }
-    else
-    {
+    // if(modes[active_mode].value == MODE_STATIC)
+    // {
+    //     controller->SetStaticColor(selected_color);
+    // }
+    // else
+    // {
         controller->SetMode(modes[active_mode].value, brightness, modes[active_mode].speed, modes[active_mode].color_mode);
-    }
+    // }
 }
