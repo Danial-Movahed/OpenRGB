@@ -23,23 +23,23 @@
 //                                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 //                                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x5A, 0xA5, 0x03, 0x03 };
 
-// NaN, Esc 7, Tab 10, Caps 13, Shift 16, Ctrl_L 19
-// NaN, 1 25,   Q 28,   A 31,    Z 34,     Win 37
-// NaN, 2 43,   W 46,   S 49,    X 52,     Alt 55
-// NaN, 3 61,   E 64,   D 67,    C 70,     NaN
-// NaN, 4 79,   R 82,   F 85,    V 88,     NaN,
-// NaN, 5 97,   T 100,   G 103,    B 106,     Space 109,
-// NaN, 6 115,   Y 118,   H 121,    N 124,     NaN,
-// NaN, 7 133,   U 136,   J 139,    M 142,     NaN,
-// NaN, 8 151,   I 154,   K 157,    , 160,     Alt_R 163,
-// NaN, 9 169,   O 172,   L 175,    . 178,     Fn 181,
-// NaN, 0 187,   P 190,   ; 193,    / 196,     Fn2 199,
-// NaN, - 205,   [ 208,   ' 211,    NaN,   NaN,
-// NaN, = 223,   ] 226,   NaN,  NaN,   NaN,
-// NaN, Bksp 241, \ 244, Enter 247, Shift 250, ← 253,
-// NaN, NaN, NaN, NaN, ↑ 268, ↓ 271,
-// NaN, Del 277, ` 280, PgUp 283, PgDn 286, → 289
-static unsigned int tkl_keys_per_key_index[] = {
+// NaN,    Esc  7, Tab 10,  Caps 13,   Shift 16,    Ctrl_L 19
+// NaN,     1  25,   Q 28,     A 31,       Z 34,    Win 37
+// NaN,     2  43,   W 46,     S 49,       X 52,    Alt 55
+// NaN,     3  61,   E 64,     D 67,       C 70,    NaN
+// NaN,     4  79,   R 82,     F 85,       V 88,    NaN,
+// NaN,     5  97,  T 100,     G 103,      B 106,   Space 109,
+// NaN,     6 115,  Y 118,     H 121,      N 124,   NaN,
+// NaN,     7 133,  U 136,     J 139,      M 142,   NaN,
+// NaN,     8 151,  I 154,     K 157,      , 160,   Alt_R 163,
+// NaN,     9 169,  O 172,     L 175,      . 178,   Fn 181,
+// NaN,     0 187,  P 190,     ; 193,      / 196,   Fn2 199,
+// NaN,     - 205,  [ 208,     ' 211,        NaN,   NaN,
+// NaN,     = 223,  ] 226,       NaN,        NaN,   NaN,
+// NaN,  Bksp 241,  \ 244, Enter 247,  Shift 250,   ← 253,
+// NaN,       NaN,    NaN,       NaN,      ↑ 268,   ↓ 271,
+// NaN,   Del 277,  ` 280,  PgUp 283,   PgDn 286,   → 289
+static unsigned int tkl_keys_per_key_index[68] = {
     // Order these to match your LED names array
     7,   // Esc
     25,  // 1
@@ -56,7 +56,6 @@ static unsigned int tkl_keys_per_key_index[] = {
     223, // =
     241, // Backspace
     277, // Delete
-
     10,  // Tab
     28,  // Q
     46,  // W
@@ -72,7 +71,6 @@ static unsigned int tkl_keys_per_key_index[] = {
     226, // ]
     244, // \
     280, // `
-
     13,  // Caps
     31,  // A
     49,  // S
@@ -87,7 +85,6 @@ static unsigned int tkl_keys_per_key_index[] = {
     211, // '
     247, // Enter
     283, // PgUp
-
     16,  // LShift
     34,  // Z
     52,  // X
@@ -102,7 +99,6 @@ static unsigned int tkl_keys_per_key_index[] = {
     250, // RShift
     268, // Up
     286, // PgDn
-
     19,  // LCtrl
     37,  // LWin
     55,  // LAlt
@@ -172,8 +168,7 @@ void SinowealthKeyboardController::SetLEDsDirect(std::vector<RGBColor> colors)
 {
     const int buffer_size = 382;
 
-    unsigned int buf[buffer_size];
-    unsigned int num_keys = 68;
+    unsigned char buf[buffer_size];
 
     /*-----------------------------------------------------*\
     | Zero out buffer                                       |
@@ -181,28 +176,28 @@ void SinowealthKeyboardController::SetLEDsDirect(std::vector<RGBColor> colors)
     memset(buf, 0x00, sizeof(buf));
 
     /*-----------------------------------------------------*\
-    | Set up Direct packet                                  |
-    \*-----------------------------------------------------*/
-    buf[0x00] = 0x08;
-    buf[0x01] = 0x0a;
-    buf[0x02] = 0x7a;
-    buf[0x03] = 0x01;
-
-    /*-----------------------------------------------------*\
     | Fill in color data                                    |
     \*-----------------------------------------------------*/
-    for (unsigned int i = 0; i < num_keys; i++)
+    for (int i = 0; i < 67; i++)
     {
         buf[tkl_keys_per_key_index[i]] = RGBGetRValue(colors[i]);
         buf[tkl_keys_per_key_index[i] + 1] = RGBGetGValue(colors[i]);
         buf[tkl_keys_per_key_index[i] + 1 + 1] = RGBGetBValue(colors[i]);
-        printf("i: %d R: %d G: %d B: %d\n", i, buf[tkl_keys_per_key_index[i]], buf[tkl_keys_per_key_index[i] + 1], buf[tkl_keys_per_key_index[i] + 1 + 1]);
+        printf("i: %d code: %d R: %d G: %d B: %d\n", i, tkl_keys_per_key_index[i], buf[tkl_keys_per_key_index[i]], buf[tkl_keys_per_key_index[i] + 1], buf[tkl_keys_per_key_index[i] + 1 + 1]);
     }
+
+    /*-----------------------------------------------------*\
+    | Set up Direct packet                                  |
+    \*-----------------------------------------------------*/
+    buf[0] = 0x08;
+    buf[1] = 0x0a;
+    buf[2] = 0x7a;
+    buf[3] = 0x01;
 
     /*-----------------------------------------------------*\
     | Send packet                                           |
     \*-----------------------------------------------------*/
-    // hid_send_feature_report(dev_data, buf, sizeof(buf));
+    hid_send_feature_report(dev_data, buf, sizeof(buf));
 }
 
 void SinowealthKeyboardController::SetMode(unsigned char mode, unsigned char brightness, unsigned char speed, unsigned char color_mode)
