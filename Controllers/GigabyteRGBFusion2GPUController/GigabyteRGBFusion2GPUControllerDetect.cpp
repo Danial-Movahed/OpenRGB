@@ -12,6 +12,7 @@
 #include "GigabyteRGBFusion2GPUController.h"
 #include "LogManager.h"
 #include "RGBController_GigabyteRGBFusion2GPU.h"
+#include "i2c_amd_gpu.h"
 #include "i2c_smbus.h"
 #include "pci_ids.h"
 
@@ -28,6 +29,11 @@
 
 bool TestForGigabyteRGBFusion2GPUController(i2c_smbus_interface* bus, unsigned char address)
 {
+    if(bus->pci_vendor == AMD_GPU_VEN && !is_amd_gpu_i2c_bus(bus))
+    {
+        return false;
+    }
+
     bool pass = false;
     int res, pktsz;
     const int read_sz = 4;
@@ -146,12 +152,14 @@ REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 3090 XTREME WATERFORCE",  
 REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 3090 XTREME WATERFORCE WB",      DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX3090_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_RTX3090_XTREME_WATERFORCE_WB_SUB_DEV,  0x64);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 GAMING OC",                       DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070_GAMING_OC_12G,                 0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 GAMING OC",                       DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070_GAMING_OC_12G_V2,              0x71);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte Geforce RTX 4070 Aero OC",                         DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070_AERO_OC_12G_SUB_DEV,           0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 SUPER GAMING OC",                 DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070S_DEV,        GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070S_GAMING_OC_12G,                0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 SUPER Aero OC",                   DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070S_DEV,        GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070S_AERO_OC_12G,                  0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 SUPER Eagle OC",                  DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070S_DEV,        GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070S_EAGLE_OC_ICE_12G,             0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti GAMING",                       DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_GAMING_12G,                  0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti GAMING OC",                    DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_GAMING_OC_12G,               0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti GAMING OC",                    DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_GAMING_OC_12G_SUB_DEV2,      0x71);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti Eagle",                        DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_EAGLE_SUB_DEV,               0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti Eagle OC",                     DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_EAGLE_OC_SUB_DEV,            0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Eagle OC",                        DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070_EAGLE_OC_SUB_DEV,              0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4070 Ti Eagle OC Rev 2",               DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4070TI_DEV,       GIGABYTE_SUB_VEN,   GIGABYTE_RTX4070TI_EAGLE_OC_V2_SUB_DEV,         0x71);
@@ -169,6 +177,8 @@ REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 4090 GAMING OC",                
 REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 4090 MASTER",                    DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX4090_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_AORUS_RTX4090_MASTER_24G_SUB_DEV,      0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 5090 D MASTER",                  DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX5090D_DEV,        GIGABYTE_SUB_VEN,   GIGABYTE_AORUS_RTX5090D_MASTER_32G_SUB_DEV,     0x71);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 5090 GAMING OC",                       DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX5090D_DEV,        GIGABYTE_SUB_VEN,   GIGABYTE_RTX5090_GAMING_OC_32G_SUB_DEV,         0x71);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 5090 MASTER",                    DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX5090_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_AORUS_RTX5090_MASTER_32G_SUB_DEV,      0x71);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte AORUS GeForce RTX 5090 MASTER ICE",                DetectGigabyteRGBFusion2GPUControllers, NVIDIA_VEN, NVIDIA_RTX5090_DEV,         GIGABYTE_SUB_VEN,   GIGABYTE_AORUS_RTX5090_MASTER_ICE_32G_SUB_DEV,  0x71);
 
 /*-----------------------------------------*\
 |  AMD GPUs                                 |
@@ -177,6 +187,8 @@ REGISTER_I2C_PCI_DETECTOR("Gigabyte GeForce RTX 5090 GAMING OC",                
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7600 GAMING OC 8G",                      DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI33_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7600_GAMING_OC_8G_SUB_DEV,           0x55);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7600 GAMING OC 8G",                      DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI33_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7600_GAMING_OC_8G_SUB_DEV2,          0x55);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7600 XT GAMING OC 16G",                  DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI33_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7600XT_GAMING_OC_16G_SUB_DEV,        0x55);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 6700 XT GAMING OC 12G",                  DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI22_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX6700XT_GAMING_OC_12G_SUB_DEV,        0x62);
+REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 6900 XT GAMING OC",                      DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI21_DEV1,           GIGABYTE_SUB_VEN,   GIGABYTE_RX6900XT_GAMING_OC_SUB_DEV,            0x62);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7700 XT GAMING OC",                      DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI32_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7700XT_GAMING_OC_SUB_DEV,            0x62);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7800 XT GAMING OC",                      DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI32_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7800XT_GAMING_OC_16G_SUB_DEV,        0x62);
 REGISTER_I2C_PCI_DETECTOR("Gigabyte Radeon RX 7900 GRE GAMING OC",                     DetectGigabyteRGBFusion2GPUControllers, AMD_GPU_VEN, AMD_NAVI31_DEV,            GIGABYTE_SUB_VEN,   GIGABYTE_RX7900GRE_GAMING_OC_16G_SUB_DEV,       0x62);

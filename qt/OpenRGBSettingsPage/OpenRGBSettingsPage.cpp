@@ -139,12 +139,27 @@ OpenRGBSettingsPage::OpenRGBSettingsPage(QWidget *parent) :
         }
     }
 
+    /*-------------------------------------*\
+    | Use PascalCase key for compatibility |
+    | should be removed later on.          |
+    \*-------------------------------------*/
     if(ui_settings.contains("RunZoneChecks"))
     {
-        ui->CheckboxRunZoneChecks->setChecked(ui_settings["RunZoneChecks"]);
+        /*----------------------------------*\
+        | Migrate key to snake_case version |
+        \*----------------------------------*/
+        ui_settings["run_zone_checks"] = ui_settings["RunZoneChecks"];
+        ui_settings.erase("RunZoneChecks");
+        ResourceManager::get()->GetSettingsManager()->SetSettings("UserInterface", ui_settings);
+
+        ui->CheckboxRunZoneChecks->setChecked(ui_settings["run_zone_checks"]);
+    }
+    else if (ui_settings.contains("run_zone_checks"))
+    {
+        ui->CheckboxRunZoneChecks->setChecked(ui_settings["run_zone_checks"]);
     }
     else
-    {   // default value
+    {
         ui->CheckboxRunZoneChecks->setChecked(true);
     }
 
@@ -183,9 +198,6 @@ OpenRGBSettingsPage::OpenRGBSettingsPage(QWidget *parent) :
     \*---------------------------------------------------------*/
     json log_manager_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("LogManager");
 
-    /*---------------------------------------------------------*\
-    | Checkboxes                                                |
-    \*---------------------------------------------------------*/
     if(log_manager_settings.contains("log_file"))
     {
         ui->CheckboxLogFile->setChecked(log_manager_settings["log_file"]);
@@ -202,6 +214,29 @@ OpenRGBSettingsPage::OpenRGBSettingsPage(QWidget *parent) :
     else
     {
         ui->CheckboxLogConsole->setChecked(false);
+    }
+
+    /*---------------------------------------------------------*\
+    | Load detector settings                                    |
+    \*---------------------------------------------------------*/
+    json detector_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("Detectors");
+
+    if(detector_settings.contains("hid_safe_mode"))
+    {
+        ui->CheckboxHIDSafeMode->setChecked(detector_settings["hid_safe_mode"]);
+    }
+    else
+    {
+        ui->CheckboxHIDSafeMode->setChecked(false);
+    }
+
+    if(detector_settings.contains("initial_detection_delay_ms"))
+    {
+        ui->TextDetectionDelay->setValue(detector_settings["initial_detection_delay_ms"]);
+    }
+    else
+    {
+        ui->TextDetectionDelay->setValue(0);
     }
 
     /*---------------------------------------------------------*\
@@ -559,7 +594,7 @@ void OpenRGBSettingsPage::on_CheckboxSaveGeometry_clicked()
 void OpenRGBSettingsPage::on_CheckboxRunZoneChecks_clicked()
 {
     json ui_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("UserInterface");
-    ui_settings["RunZoneChecks"] = ui->CheckboxRunZoneChecks->isChecked();
+    ui_settings["run_zone_checks"] = ui->CheckboxRunZoneChecks->isChecked();
     ResourceManager::get()->GetSettingsManager()->SetSettings("UserInterface", ui_settings);
     SaveSettings();
 }
@@ -1002,6 +1037,22 @@ void OpenRGBSettingsPage::on_CheckboxLogFile_clicked()
     json log_manager_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("LogManager");
     log_manager_settings["log_file"] = ui->CheckboxLogFile->isChecked();
     ResourceManager::get()->GetSettingsManager()->SetSettings("LogManager", log_manager_settings);
+    SaveSettings();
+}
+
+void OpenRGBSettingsPage::on_CheckboxHIDSafeMode_clicked()
+{
+    json detector_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("Detectors");
+    detector_settings["hid_safe_mode"] = ui->CheckboxHIDSafeMode->isChecked();
+    ResourceManager::get()->GetSettingsManager()->SetSettings("Detectors", detector_settings);
+    SaveSettings();
+}
+
+void OpenRGBSettingsPage::on_TextDetectionDelay_valueChanged(int delay)
+{
+    json detector_settings = ResourceManager::get()->GetSettingsManager()->GetSettings("Detectors");
+    detector_settings["initial_detection_delay_ms"] = delay;
+    ResourceManager::get()->GetSettingsManager()->SetSettings("Detectors", detector_settings);
     SaveSettings();
 }
 

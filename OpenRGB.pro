@@ -590,7 +590,9 @@ contains(QMAKE_PLATFORM, linux) {
     metainfo.files+=qt/org.openrgb.OpenRGB.metainfo.xml
     systemd_service.path=$$PREFIX/lib/systemd/system/
     systemd_service.files+=qt/openrgb.service
-    INSTALLS += target desktop icon metainfo udev_rules systemd_service
+    tmpfiles.path=$$PREFIX/lib/tmpfiles.d/
+    tmpfiles.files+=qt/openrgb.conf
+    INSTALLS += target desktop icon metainfo udev_rules systemd_service tmpfiles
 }
 
 #-----------------------------------------------------------------------------------------------#
@@ -733,8 +735,8 @@ macx {
 
     SOURCES += $$CONTROLLER_CPP_MACOS
 
-    # Use mbedtls
-    MBEDTLS_PREFIX = $$system(brew --prefix mbedtls)
+    # Use mbedtls 3
+    MBEDTLS_PREFIX = $$system(brew --prefix mbedtls@3)
 
     INCLUDEPATH +=                                                                              \
     $$MBEDTLS_PREFIX/include                                                                    \

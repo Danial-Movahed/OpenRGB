@@ -57,6 +57,7 @@ RGBController_AuraTUFKeyboard::RGBController_AuraTUFKeyboard(AuraTUFKeyboardCont
             case AURA_ROG_STRIX_FLARE_COD_BO4_PID:
             case AURA_TUF_K3_GAMING_PID:
             case AURA_TUF_K7_GAMING_PID:
+            case AURA_TUF_K3_GENII_MIKU_EDITION_PID:
                 AURA_KEYBOARD_SPEED_MIN          = 15;
                 AURA_KEYBOARD_SPEED_MAX          = 0;
                 AURA_KEYBOARD_SPEED_DEFAULT      = 8;
@@ -76,6 +77,7 @@ RGBController_AuraTUFKeyboard::RGBController_AuraTUFKeyboard(AuraTUFKeyboardCont
             case AURA_ROG_STRIX_SCOPE_II_PID:
             case AURA_ROG_STRIX_SCOPE_II_RX_PID:
             case AURA_ROG_STRIX_SCOPE_II_96_WIRELESS_USB_PID:
+            case AURA_ROG_STRIX_SCOPE_II_96_RX_WIRELESS_USB_PID:
             case AURA_TUF_K5_GAMING_PID:
                 AURA_KEYBOARD_SPEED_MIN          = 255;
                 AURA_KEYBOARD_SPEED_MAX          = 0;
@@ -424,6 +426,7 @@ void RGBController_AuraTUFKeyboard::SetupZones()
             break;
         case AURA_TUF_K3_GAMING_PID:
         case AURA_TUF_K7_GAMING_PID:
+        case AURA_TUF_K3_GENII_MIKU_EDITION_PID:
             keyboard_ptr = &AsusTUFK7Layouts;
             break;
         case AURA_ROG_STRIX_SCOPE_PID:
@@ -439,6 +442,9 @@ void RGBController_AuraTUFKeyboard::SetupZones()
             break;
         case AURA_ROG_STRIX_SCOPE_II_96_WIRELESS_USB_PID:
             keyboard_ptr = &AsusROGStrixScopeII96WirelessLayouts;
+            break;
+        case AURA_ROG_STRIX_SCOPE_II_96_RX_WIRELESS_USB_PID:
+            keyboard_ptr = &AsusROGStrixScopeII96RxWirelessLayouts;
             break;
         case AURA_ROG_STRIX_FLARE_II_PID:
             keyboard_ptr = &AsusROGStrixFlareIILayouts;
@@ -475,6 +481,9 @@ void RGBController_AuraTUFKeyboard::SetupZones()
         case AURA_TUF_K1_GAMING_PID:
         case AURA_TUF_K5_GAMING_PID:
             keyboard_ptr = &AsusTufK1Layouts;
+            break;
+        case AURA_TUF_K3_GAMING_GEN_II_PID:
+            keyboard_ptr = &AsusTUFK3GamingGen2Layouts;
             break;
         default:
             keyboard_ptr = &AsusTUFK7Layouts;

@@ -74,6 +74,7 @@ typedef struct
 #define CORSAIR_K60_RGB_PRO_TKL_B_PID               0x1BC7
 #define CORSAIR_K60_RGB_PRO_TKL_W_PID               0x1BED
 #define CORSAIR_K70_CORE_RGB_PID                    0x1BFD
+#define CORSAIR_K70_CORE_RGB_TKL_PID                0x2B01
 #define CORSAIR_K70_RGB_PRO_PID                     0x1BC4
 #define CORSAIR_K70_RGB_PRO_V2_PID                  0x1BB3
 #define CORSAIR_K70_RGB_TKL_PID                     0x1B73
@@ -98,6 +99,7 @@ typedef struct
 #define CORSAIR_M65_RGB_ULTRA_WIRELESS_PID          0x1BB5
 #define CORSAIR_M75_GAMING_MOUSE_PID                0x1BF0
 #define CORSAIR_SLIPSTREAM_WIRELESS_PID1            0x1BA6
+#define CORSAIR_SLIPSTREAM_WIRELESS_V2_PID1         0x1B66
 #define CORSAIR_SLIPSTREAM_WIRELESS_PID2            0x1B65
 
 /*-----------------------------------------------------*\

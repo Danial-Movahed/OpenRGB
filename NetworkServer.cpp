@@ -26,12 +26,16 @@
 #include <stdlib.h>
 #include <iostream>
 
-const char yes = 1;
-
 #ifdef WIN32
 #include <Windows.h>
 #else
 #include <unistd.h>
+#endif
+
+#ifdef __linux__
+const int yes = 1;
+#else
+const char yes = 1;
 #endif
 
 using namespace std::chrono_literals;
@@ -289,6 +293,11 @@ void NetworkServer::StartServer()
         }
 
         /*---------------------------------------------------------*\
+        | Set socket options - reuse addr                           |
+        \*---------------------------------------------------------*/
+        setsockopt(server_sock[socket_count], SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
+        /*---------------------------------------------------------*\
         | Bind the server socket                                    |
         \*---------------------------------------------------------*/
         if(bind(server_sock[socket_count], res->ai_addr, res->ai_addrlen) == SOCKET_ERROR)
@@ -543,6 +552,13 @@ int NetworkServer::recv_select(SOCKET s, char *buf, int len, int flags)
         }
         else
         {
+        /*-------------------------------------------------*\
+        | Set QUICKACK socket option on Linux to improve    |
+        | performance                                       |
+        \*-------------------------------------------------*/
+#ifdef __linux__
+            setsockopt(s, IPPROTO_TCP, TCP_QUICKACK, &yes, sizeof(yes));
+#endif
             return(recv(s, buf, len, flags));
         }
     }
@@ -1052,7 +1068,7 @@ void NetworkServer::ProcessRequest_ClientString(SOCKET client_sock, unsigned int
 
 void NetworkServer::ProcessRequest_RescanDevices()
 {
-    ResourceManager::get()->DetectDevices();
+    ResourceManager::get()->RescanDevices();
 }
 
 void NetworkServer::SendReply_ControllerCount(SOCKET client_sock)

@@ -102,7 +102,7 @@ void DetectMSIMysticLightControllers
 
                 try
                 {
-                    MSIMysticLight761Controller*     controller     = new MSIMysticLight761Controller(dev, (const char *) info->path, info->product_id, dmi_name);
+                    MSIMysticLight761Controller*     controller     = new MSIMysticLight761Controller(dev, (const char *) info->path, dmi_name);
                     RGBController_MSIMysticLight761* rgb_controller = new RGBController_MSIMysticLight761(controller);
                     ResourceManager::get()->RegisterRGBController(rgb_controller);
                 }
@@ -159,6 +159,7 @@ REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7B50",    DetectMSIMysticLightCont
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7B85",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7B85,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7B92",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7B92,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7B93",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7B93,   0x0001, 0x00);
+REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7C02",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7C02,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7C34",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7C34,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7C35",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7C35,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7C36",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7C36,   0x0001, 0x00);
@@ -245,18 +246,23 @@ REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E07",    DetectMSIMysticLightCont
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E09",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E09,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E10",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E10,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_B926",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0xB926,   0x0001, 0x00);
+REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E70",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E70,   0x0001, 0x00);
+REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E59",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E59,   0x0001, 0x00);
+REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E80",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E80,   0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E81",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E81,   0x0001, 0x00);
+REGISTER_HID_DETECTOR_PU("MSI Mystic Light MS_7E34",    DetectMSIMysticLightControllers,   MSI_USB_VID,    0x7E34,   0x0001, 0x00);
 // Detector for the set of common boards
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light Common",     DetectMSIMysticLightControllers,   MSI_USB_VID_COMMON,  MSI_USB_PID_COMMON, 0x0001, 0x00);
 REGISTER_HID_DETECTOR_PU("MSI Mystic Light X870",     DetectMSIMysticLightControllers,   MSI_USB_VID_COMMON,  MSI_USB_PID_COMMON, 0xFF00, 0x01);
 /*---------------------------------------------------------------------------------------------------------*\
-| Dummy entries for boards using commwn VID and PID                                                         |
+| Dummy entries for boards using common VID and PID                                                         |
 |                                                                                                           |
 | DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E12", DetectMSIMysticLightControllers, 0x1462, 0x7E12 )       |
 | DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E16", DetectMSIMysticLightControllers, 0x1462, 0x7E16 )       |
 | DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E24", DetectMSIMysticLightControllers, 0x1462, 0x7E24 )       |
 | DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E26", DetectMSIMysticLightControllers, 0x1462, 0x7E26 )       |
 | DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E27", DetectMSIMysticLightControllers, 0x1462, 0x7E27 )       |
+| DUMMY_DEVICE_DETECTOR("MSI Mystic Light MS_7E49", DetectMSIMysticLightControllers, 0x1462, 0x7E49 )       |
 \*---------------------------------------------------------------------------------------------------------*/
 
 

@@ -29,7 +29,11 @@
 #define connect_socklen_t socklen_t
 #endif
 
+#ifdef __linux__
+const int yes = 1;
+#else
 const char yes = 1;
+#endif
 
 net_port::net_port()
 {
@@ -268,6 +272,11 @@ bool net_port::tcp_server(const char * port)
     myAddress.sin_port = htons(atoi(port));
 
     /*-------------------------------------------------*\
+    | Set socket options - reuse addr                   |
+    \*-------------------------------------------------*/
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
+    /*-------------------------------------------------*\
     | Bind the server socket                            |
     \*-------------------------------------------------*/
     if(bind(sock, (sockaddr*)&myAddress, sizeof(myAddress)) == SOCKET_ERROR)
@@ -323,6 +332,13 @@ void net_port::tcp_close()
 
 int net_port::tcp_listen(char * recv_data, int length)
 {
+    /*-------------------------------------------------*\
+    | Set QUICKACK socket option on Linux to improve    |
+    | performance                                       |
+    \*-------------------------------------------------*/
+#ifdef __linux__
+    setsockopt(sock, IPPROTO_TCP, TCP_QUICKACK, &yes, sizeof(yes));
+#endif
     return(recv(sock, recv_data, length, 0));
 }
 

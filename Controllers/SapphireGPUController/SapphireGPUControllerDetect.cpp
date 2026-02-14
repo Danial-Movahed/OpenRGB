@@ -12,6 +12,7 @@
 #include "SapphireNitroGlowV3Controller.h"
 #include "RGBController_SapphireNitroGlowV1.h"
 #include "RGBController_SapphireNitroGlowV3.h"
+#include "i2c_amd_gpu.h"
 #include "i2c_smbus.h"
 #include "pci_ids.h"
 
@@ -35,19 +36,13 @@ enum
 
 bool TestForSapphireGPUController(i2c_smbus_interface* bus, unsigned char address)
 {
-    bool pass = false;
-    int res;
-
-    //Read a byte to test for presence
-    res = bus->i2c_smbus_read_byte(address);
-
-    if (res >= 0)
+    if(bus->pci_vendor == AMD_GPU_VEN && !is_amd_gpu_i2c_bus(bus))
     {
-        pass = true;
+        return false;
     }
 
-    return(pass);
-
+    //Read a byte to test for presence
+    return bus->i2c_smbus_read_byte(address) >= 0;
 }   /* TestForSapphireGPUController() */
 
 /******************************************************************************************\
@@ -107,6 +102,7 @@ REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 7700 XT Nitro+",                  
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 7800 XT Nitro+",                     DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI32_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI32_7800XT_NITRO_PLUS_SUB_DEV,      SAPPHIRE_NITRO_GLOW_V3_ADDR);
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 7900 GRE Nitro+",                    DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI31_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI31_GRE_NITRO_PLUS_SUB_DEV,         SAPPHIRE_NITRO_GLOW_V3_ADDR);
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 7900 XTX Nitro+",                    DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI31_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI31_NITRO_PLUS_SUB_DEV,             SAPPHIRE_NITRO_GLOW_V3_ADDR);
+REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 9060 XT Pure",                       DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI44_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI44_PURE_XT_SUB_DEV,                SAPPHIRE_NITRO_GLOW_V3_ADDR);
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 9060 XT Nitro+",                     DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI48_DEV1,        SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI48_NITRO_PLUS_SUB_DEV1,            SAPPHIRE_NITRO_GLOW_V3_ADDR);
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 9070 Pure",                          DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI48_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI48_PURE_SUB_DEV,                   SAPPHIRE_NITRO_GLOW_V3_ADDR);
 REGISTER_I2C_PCI_DETECTOR("Sapphire Radeon RX 9070 XT Nitro+",                     DetectSapphireV3Controllers,    AMD_GPU_VEN,    AMD_NAVI48_DEV,         SAPPHIRE_SUB_VEN,           SAPPHIRE_NAVI48_NITRO_PLUS_SUB_DEV,             SAPPHIRE_NITRO_GLOW_V3_ADDR);

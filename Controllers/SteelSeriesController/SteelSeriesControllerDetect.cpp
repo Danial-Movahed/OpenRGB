@@ -14,6 +14,7 @@
 #include "SteelSeriesAerox5Controller.h"
 #include "SteelSeriesArctis5Controller.h"
 #include "SteelSeriesApex8ZoneController.h"
+#include "SteelSeriesApex9Controller.h"
 #include "SteelSeriesApexController.h"
 #include "SteelSeriesApexMController.h"
 #include "SteelSeriesApexTZoneController.h"
@@ -89,18 +90,18 @@
 #define STEELSERIES_ARCTIS_5_PID                    0x1250
 #define STEELSERIES_ARCTIS_5_V2_PID                 0x12AA
 
-/*------------------------------------------------------------------*\
-| Mousemat product IDs                                               |
-\*------------------------------------------------------------------*/
-#define STEELSERIES_QCK_PRISM_CLOTH_MED_PID                     0x150A
-#define STEELSERIES_QCK_PRISM_CLOTH_XL_PID                      0x150D
-#define STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_PID              0x151E
-#define STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEON_RIDER_PID      0x1514
-#define STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEO_NOIR_PID        0x151C
-#define STEELSERIES_QCK_PRISM_CLOTH_3XL_PID                     0x1516
-#define STEELSERIES_QCK_PRISM_CLOTH_4XL_PID                     0x1518
-#define STEELSERIES_QCK_PRISM_CLOTH_5XL_PID                     0x151A
-#define STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_LIGHTFALL_ED_PID 0X1520
+/*--------------------------------------------------------------------*\
+| Mousemat product IDs                                                 |
+\*--------------------------------------------------------------------*/
+#define STEELSERIES_QCK_PRISM_CLOTH_MED_PID                       0x150A
+#define STEELSERIES_QCK_PRISM_CLOTH_XL_PID                        0x150D
+#define STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_PID                0x151E
+#define STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEON_RIDER_PID        0x1514
+#define STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEO_NOIR_PID          0x151C
+#define STEELSERIES_QCK_PRISM_CLOTH_3XL_PID                       0x1516
+#define STEELSERIES_QCK_PRISM_CLOTH_4XL_PID                       0x1518
+#define STEELSERIES_QCK_PRISM_CLOTH_5XL_PID                       0x151A
+#define STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_2_LIGHTFALL_ED_PID 0x1520
 
 /*-----------------------------------------------------*\
 | Keyboard product IDs                                  |
@@ -110,9 +111,13 @@
 #define STEELSERIES_APEX_5_PID                      0x161C
 #define STEELSERIES_APEX_7_PID                      0x1612
 #define STEELSERIES_APEX_7_TKL_PID                  0x1618
+#define STEELSERIES_APEX_9_TKL_PID                  0x1634
+#define STEELSERIES_APEX_9_MINI_PID                 0x1620
 #define STEELSERIES_APEX_PRO_PID                    0x1610
 #define STEELSERIES_APEX_PRO_TKL_PID                0x1614
 #define STEELSERIES_APEX_PRO_TKL_2023_PID           0x1628
+#define STEELSERIES_APEX_PRO_TKL_2023_WL_PID_1      0x1630
+#define STEELSERIES_APEX_PRO_TKL_2023_WL_PID_2      0x1632
 #define STEELSERIES_APEX_M750_PID                   0x0616
 #define STEELSERIES_APEX_OG_PID                     0x1202
 #define STEELSERIES_APEX_350_PID                    0x1206
@@ -244,6 +249,28 @@ void DetectSteelSeriesApex(hid_device_info* info, const std::string& name)
 
         ResourceManager::get()->RegisterRGBController(rgb_controller);
     }
+}
+
+void DetectSteelSeriesApex9(hid_device_info* info, const std::string& name, steelseries_type proto_type)
+{
+    hid_device* dev = hid_open_path(info->path);
+    if(dev)
+    {
+        SteelSeriesApex9Controller* controller              = new SteelSeriesApex9Controller(dev, proto_type, info->path, name);
+        RGBController_SteelSeriesApex* rgb_controller       = new RGBController_SteelSeriesApex(controller);
+
+        ResourceManager::get()->RegisterRGBController(rgb_controller);
+    }
+}
+
+void DetectSteelSeriesApex9TKL(hid_device_info* info, const std::string& name)
+{
+    DetectSteelSeriesApex9(info, name, APEX_9_TKL);
+}
+
+void DetectSteelSeriesApex9Mini(hid_device_info* info, const std::string& name)
+{
+    DetectSteelSeriesApex9(info, name, APEX_9_MINI);
 }
 
 void DetectSteelSeriesApexM(hid_device_info* info, const std::string& name)
@@ -454,18 +481,18 @@ REGISTER_HID_DETECTOR_I("SteelSeries Siberia 350",                          Dete
 REGISTER_HID_DETECTOR_I("SteelSeries Arctis 5",                             DetectSteelSeriesArctis5,   STEELSERIES_VID, STEELSERIES_ARCTIS_5_PID,                  5  );
 REGISTER_HID_DETECTOR_I("SteelSeries Arctis 5",                             DetectSteelSeriesArctis5,   STEELSERIES_VID, STEELSERIES_ARCTIS_5_V2_PID,               5  );
 
-/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*\
-| Mousemats                                                                                                                                                                                    |
-\*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth Medium",                       DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_MED_PID,                      0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL",                           DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_PID,                       0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL Destiny Ed.",               DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_PID,               0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL Destiny Lightfall Ed.",     DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_LIGHTFALL_ED_PID,  0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL CS:GO Neon Rider Ed.",      DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEON_RIDER_PID,       0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL CS:GO Neo Noir Ed.",        DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEO_NOIR_PID,         0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 3XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_3XL_PID,                      0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 4XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_4XL_PID,                      0  );
-REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 5XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_5XL_PID,                      0  );
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*\
+| Mousemats                                                                                                                                                                                      |
+\*----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth Medium",                       DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_MED_PID,                        0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL",                           DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_PID,                         0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL Destiny Ed.",               DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_PID,                 0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL Destiny 2 Lightfall Ed.",   DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_DESTINY_2_LIGHTFALL_ED_PID,  0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL CS:GO Neon Rider Ed.",      DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEON_RIDER_PID,         0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth XL CS:GO Neo Noir Ed.",        DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_XL_CSGO_NEO_NOIR_PID,           0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 3XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_3XL_PID,                        0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 4XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_4XL_PID,                        0  );
+REGISTER_HID_DETECTOR_I("SteelSeries QCK Prism Cloth 5XL",                          DetectSteelSeriesMousemat,  STEELSERIES_VID, STEELSERIES_QCK_PRISM_CLOTH_5XL_PID,                        0  );
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------------*\
 | Keyboards                                                                                                                                                                 |
@@ -475,10 +502,14 @@ REGISTER_HID_DETECTOR_IPU("SteelSeries Apex 3 TKL",                         Dete
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 5",                             DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_5_PID,                    	1  );
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 7",                             DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_7_PID,                    	1  );
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 7 TKL",                         DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_7_TKL_PID,                	1  );
+REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 9 TKL",                         DetectSteelSeriesApex9TKL,  STEELSERIES_VID, STEELSERIES_APEX_9_TKL_PID,                	1  );
+REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 9 Mini",                        DetectSteelSeriesApex9Mini, STEELSERIES_VID, STEELSERIES_APEX_9_MINI_PID,                	1  );
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro",                           DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_PID,                  	1  );
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro TKL",                       DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_TKL_PID,              	1  );
-REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro TKL 2023",                  DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_TKL_2023_PID,          	1  );
+REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro TKL 2023 Wired",            DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_TKL_2023_PID,          	1  );
+REGISTER_HID_DETECTOR_IPU("SteelSeries Apex Pro TKL 2023 Wireless",         DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_TKL_2023_WL_PID_1, 3, 0xFFC0, 1);
+REGISTER_HID_DETECTOR_IPU("SteelSeries Apex Pro TKL 2023 Wireless",         DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO_TKL_2023_WL_PID_2, 3, 0xFFC0, 1);
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex M750",                          DetectSteelSeriesApexM,     STEELSERIES_VID, STEELSERIES_APEX_M750_PID,                 	2  );
 REGISTER_HID_DETECTOR_I  ("SteelSeries Apex (OG)/Apex Fnatic",              DetectSteelSeriesApexOld,   STEELSERIES_VID, STEELSERIES_APEX_OG_PID,                   	0  );
-REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 350",                           DetectSteelSeriesApexOld,   STEELSERIES_VID, STEELSERIES_APEX_350_PID,                  0  );
-REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro 3",                         DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO3_PID,                 1  );
+REGISTER_HID_DETECTOR_I  ("SteelSeries Apex 350",                           DetectSteelSeriesApexOld,   STEELSERIES_VID, STEELSERIES_APEX_350_PID,                      0  );
+REGISTER_HID_DETECTOR_I  ("SteelSeries Apex Pro 3",                         DetectSteelSeriesApex,      STEELSERIES_VID, STEELSERIES_APEX_PRO3_PID,                     1  );

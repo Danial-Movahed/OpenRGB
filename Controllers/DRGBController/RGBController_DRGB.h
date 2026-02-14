@@ -21,6 +21,7 @@
 #define DRGB_SIG_V4F_PID        0x3636
 #define DRGB_AG_04_V4F_PID      0x3204
 #define DRGB_AG_16_V4F_PID      0x3216
+#define DRGB_AG_16_F12_PID      0x3F28
 
 #define DRGB_L8_V5_PID          0x3208
 #define DRGB_U16_V5_PID         0x3215
@@ -34,6 +35,7 @@
 #define DRGB_Ultra_V3_PID       0x1221
 #define DRGB_CORE_V3_PID        0x1226
 #define DRGB_E8_F_PID           0x1408
+#define DRGB_E8_PID             0x1407
 #define DRGB_E16_PID            0x1416
 #define DM_10_PID               0x1410
 #define JPU_12_PID              0x1412

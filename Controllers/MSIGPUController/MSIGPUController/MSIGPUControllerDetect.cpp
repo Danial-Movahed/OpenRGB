@@ -10,6 +10,7 @@
 #include "Detector.h"
 #include "MSIGPUController.h"
 #include "RGBController_MSIGPU.h"
+#include "i2c_amd_gpu.h"
 #include "i2c_smbus.h"
 #include "pci_ids.h"
 
@@ -24,6 +25,10 @@
 void DetectMSIGPUControllers(i2c_smbus_interface* bus, uint8_t i2c_addr, const std::string& name)
 {
     if(bus->pci_vendor == NVIDIA_VEN && bus->port_id != 1)
+    {
+        return;
+    }
+    if(bus->pci_vendor == AMD_GPU_VEN && !is_amd_gpu_i2c_bus(bus))
     {
         return;
     }
@@ -111,6 +116,7 @@ REGISTER_I2C_PCI_DETECTOR("MSI GeForce RTX 3090 Ti Gaming X Trio",          Dete
 |  AMD GPUs                                 |
 \*-----------------------------------------*/
 
+REGISTER_I2C_PCI_DETECTOR("MSI Radeon RX 5600 XT Gaming X",                 DetectMSIGPUControllers,    AMD_GPU_VEN,    AMD_NAVI10_DEV,             MSI_SUB_VEN,    MSI_RX5600XT_GAMING_X_SUB_DEV,          0x68);
 REGISTER_I2C_PCI_DETECTOR("MSI Radeon RX 6600 XT Gaming X",                 DetectMSIGPUControllers,    AMD_GPU_VEN,    AMD_NAVI23_DEV,             MSI_SUB_VEN,    MSI_RX6600XT_GAMING_X_SUB_DEV,          0x68);
 REGISTER_I2C_PCI_DETECTOR("MSI Radeon RX 6650 XT Gaming X",                 DetectMSIGPUControllers,    AMD_GPU_VEN,    AMD_NAVI23_DEV1,            MSI_SUB_VEN,    MSI_RX6650XT_GAMING_X_SUB_DEV,          0x68);
 REGISTER_I2C_PCI_DETECTOR("MSI Radeon RX 6700 XT Gaming X",                 DetectMSIGPUControllers,    AMD_GPU_VEN,    AMD_NAVI22_DEV,             MSI_SUB_VEN,    MSI_RX6700XT_GAMING_X_SUB_DEV,          0x68);

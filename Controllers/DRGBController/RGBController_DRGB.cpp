@@ -98,6 +98,11 @@ void RGBController_DRGB::SetupZones()
             NUM_Channel_led = 256;
             Version         = 4;
             break;
+        case DRGB_AG_16_F12_PID:
+            NUM_CHANNELS    = 16;
+            NUM_Channel_led = 256;
+            Version         = 4;
+            break;
 
         case DRGB_L8_V5_PID:
             NUM_CHANNELS    = 8;
@@ -146,6 +151,11 @@ void RGBController_DRGB::SetupZones()
             Version         = 3;
             break;
         case DRGB_E8_F_PID:
+            NUM_CHANNELS    = 8;
+            NUM_Channel_led = 132;
+            Version         = 1;
+            break;
+        case DRGB_E8_PID:
             NUM_CHANNELS    = 8;
             NUM_Channel_led = 132;
             Version         = 1;
@@ -256,23 +266,23 @@ void RGBController_DRGB::SetupZones()
         {
             if(channel_idx<4)
             {
-                snprintf(ch_idx_string, 2, "%d", channel_idx+1 );
+                snprintf(ch_idx_string, 3, "%d", channel_idx+1 );
                 zones[channel_idx].name     = "LCD ";
             }
             else if(channel_idx<6)
             {
-                snprintf(ch_idx_string, 2, "%d", channel_idx+1 );
+                snprintf(ch_idx_string, 3, "%d", channel_idx+1 );
                 zones[channel_idx].name     = "LED ";
             }
             else if(channel_idx<16)
             {
-                snprintf(ch_idx_string, 2, "%d", channel_idx-5 );
+                snprintf(ch_idx_string, 3, "%d", channel_idx-5 );
                 zones[channel_idx].name     = "ARGB ";
             }
         }
         else if(channel_idx<8)
         {
-            snprintf(ch_idx_string, 2, "%d", channel_idx + 1);
+            snprintf(ch_idx_string, 3, "%d", channel_idx + 1);
             zones[channel_idx].name     = "Channel A";
         }
         else if(channel_idx<16)

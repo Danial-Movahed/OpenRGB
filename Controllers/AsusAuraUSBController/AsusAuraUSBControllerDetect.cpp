@@ -50,6 +50,7 @@
 #define AURA_MOTHERBOARD_2_PID                              0x1939
 #define AURA_MOTHERBOARD_3_PID                              0x19AF
 #define AURA_MOTHERBOARD_4_PID                              0x1AA6
+#define AURA_MOTHERBOARD_5_PID                              0x1BED
 
 /*-----------------------------------------------------------------*\
 |  KEYBOARDS                                                        |
@@ -75,10 +76,13 @@
 #define AURA_ROG_STRIX_SCOPE_II_PID                         0x1AB3
 #define AURA_ROG_STRIX_SCOPE_II_RX_PID                      0x1AB5
 #define AURA_ROG_STRIX_SCOPE_II_96_WIRELESS_USB_PID         0x1AAE
+#define AURA_ROG_STRIX_SCOPE_II_96_RX_WIRELESS_USB_PID      0x1B78
 #define AURA_TUF_K1_GAMING_PID                              0x1945
 #define AURA_TUF_K3_GAMING_PID                              0x194B
+#define AURA_TUF_K3_GAMING_GEN_II_PID                       0x1B30
 #define AURA_TUF_K5_GAMING_PID                              0x1899
 #define AURA_TUF_K7_GAMING_PID                              0x18AA
+#define AURA_TUF_K3_GENII_MIKU_EDITION_PID                  0x1C5E
 
 /*-----------------------------------------------------------------*\
 |  MICE - defined in AsusAuraMouseDevices.h                         |
@@ -344,6 +348,7 @@ REGISTER_HID_DETECTOR   ("ASUS Aura Motherboard",                       DetectAs
 REGISTER_HID_DETECTOR   ("ASUS Aura Motherboard",                       DetectAsusAuraUSBMotherboards,  AURA_USB_VID, AURA_MOTHERBOARD_2_PID);
 REGISTER_HID_DETECTOR   ("ASUS Aura Motherboard",                       DetectAsusAuraUSBMotherboards,  AURA_USB_VID, AURA_MOTHERBOARD_3_PID);
 REGISTER_HID_DETECTOR   ("ASUS Aura Motherboard",                       DetectAsusAuraUSBMotherboards,  AURA_USB_VID, AURA_MOTHERBOARD_4_PID);
+REGISTER_HID_DETECTOR   ("ASUS Aura Motherboard",                       DetectAsusAuraUSBMotherboards,  AURA_USB_VID, AURA_MOTHERBOARD_5_PID);
 
 /*-----------------------------------------------------------------*\
 |  KEYBOARDS                                                        |
@@ -369,10 +374,13 @@ REGISTER_HID_DETECTOR_IP("ASUS ROG Strix Scope NX Wireless Deluxe 2.4GHz",  Dete
 REGISTER_HID_DETECTOR_IP("ASUS ROG Strix Scope II",                         DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_ROG_STRIX_SCOPE_II_PID,                      1,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS ROG Strix Scope II RX",                      DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_ROG_STRIX_SCOPE_II_RX_PID,                   1,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS ROG Strix Scope II 96 Wireless USB",         DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_ROG_STRIX_SCOPE_II_96_WIRELESS_USB_PID,      1,  0xFF00);
+REGISTER_HID_DETECTOR_IP("ASUS ROG Strix Scope II 96 RX Wireless USB",      DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_ROG_STRIX_SCOPE_II_96_RX_WIRELESS_USB_PID,   1,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K1",                              DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K1_GAMING_PID,                           2,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K3",                              DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K3_GAMING_PID,                           1,  0xFF00);
+REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K3 GEN II",                       DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K3_GAMING_GEN_II_PID,                    1,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K5",                              DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K5_GAMING_PID,                           2,  0xFF00);
 REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K7",                              DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K7_GAMING_PID,                           1,  0xFF00);
+REGISTER_HID_DETECTOR_IP("ASUS TUF Gaming K3 GEN II MIKU EDITION",          DetectAsusAuraTUFUSBKeyboard,   AURA_USB_VID, AURA_TUF_K3_GENII_MIKU_EDITION_PID,               1,  0xFF00);
 
 /*-----------------------------------------------------------------*\
 |  MICE                                                             |

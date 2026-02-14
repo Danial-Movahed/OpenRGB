@@ -51,7 +51,19 @@ static const std::string board_names[] =
     "MSI MAG B850M MORTAR WIFI (MS-7E61)",
     "MSI MPG B850I EDGE TI WIFI (MS-7E79)",
     "MSI X870 GAMING PLUS WIFI (MS-7E47)",
-    "MSI B850M GAMING PLUS WIFI6E (MS-7E81)"
+    "MSI B850 GAMING PLUS WIFI6E (MS-7E80)",
+    "MSI B850M GAMING PLUS WIFI6E (MS-7E81)",
+    "MSI MPG X870E CARBON WIFI (MS-7E49)",
+    "MSI Z890 GAMING PLUS WIFI (MS-7E34)",
+    "MSI X870E GAMING PLUS WIFI (MS-7E70)",
+    "MSI MAG X870E TOMAHAWK WIFI (MS-7E59)",
+    "MSI PRO B850-P WIFI (MS-7E56)",
+    "MSI B850M GAMING PLUS WIFI (MS-7E66)",
+    "MSI PRO X870E-P WIFI (MS-7E70)",
+    "MSI MPG X870I EDGE TI EVO WIFI (MS-7E50)",
+    "MSI B850 GAMING PLUS WIFI (MS-7E56)",
+    "MSI PRO X870-P WIFI (MS-7E47)",
+    "MSI MPG X870E EDGE TI WIFI (MS-7E59)",
 };
 
 static const mystic_light_761_config board_configs[] =
@@ -60,9 +72,20 @@ static const mystic_light_761_config board_configs[] =
     { &(board_names[1]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI MAG B850M MORTAR WIFI
     { &(board_names[2]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI MPG B850I EDGE TI WIFI
     { &(board_names[3]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI X870 GAMING PLUS WIFI
-    { &(board_names[4]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI B850M GAMING PLUS WIFI6E
+    { &(board_names[4]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI B850 GAMING PLUS WIFI6E
+    { &(board_names[5]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI B850M GAMING PLUS WIFI6E
+    { &(board_names[6]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI MPG X870E CARBON WIFI
+    { &(board_names[7]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI Z890 GAMING PLUS WIFI
+    { &(board_names[8]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI X870E GAMING PLUS WIFI
+    { &(board_names[9]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },    // MSI MAG X870E TOMAHAWK WIFI
+    { &(board_names[10]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI PRO B850-P WIFI (MS-7E56)
+    { &(board_names[11]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI B850M GAMING PLUS WIFI
+    { &(board_names[12]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI PRO X870E-P WIFI
+    { &(board_names[13]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI MPG X870I EDGE TI EVO WIFI (MS-7E50)
+    { &(board_names[14]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI B850 GAMING PLUS WIFI (MS-7E56)
+    { &(board_names[15]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI PRO X870-P WIFI
+    { &(board_names[16]), 0,  0,  0, 1, &zone_set1,  MSIMysticLight761Controller::DIRECT_MODE_ZONE_BASED },   // MSI MPG X870E EDGE TI WIFI
 };
-
 
 enum MSI_ZONE setup_map [] =
     {
@@ -98,7 +121,6 @@ int get_zone_setup_index(MSI_ZONE index)
     }
     return -1;
 }
-
 
 // Copying from signal plugin
 // DO NOT MODIFY THIS ARRAY DIRECTLY, MAKE COPY
@@ -152,9 +174,8 @@ void init_packet(FeaturePacket_Zone_761 * packet)
 
 MSIMysticLight761Controller::MSIMysticLight761Controller
     (
-    hid_device* handle,
-    const char* path,
-    unsigned short  pid,
+    hid_device*     handle,
+    const char*     path,
     std::string     dev_name
     )
 {
@@ -163,7 +184,7 @@ MSIMysticLight761Controller::MSIMysticLight761Controller
     name                                            = dev_name;
 
     const mystic_light_761_config * board_config    = nullptr;
-    for(int i = 0; i < NUM_CONFS; i++)
+    for(std::size_t i = 0; i < NUM_CONFS; i++)
     {
         if(*(board_configs[i].name) == name)
         {
@@ -347,7 +368,6 @@ bool MSIMysticLight761Controller::Update
     bool /*save*/
     )
 {
-
     int ret = 0;
     bool flag = true;
     ret = hid_send_feature_report(dev, GET_CHAR_PTR_REF(data->jaf.packet) , sizeof(FeaturePacket_PerLED_761));
@@ -399,7 +419,7 @@ void MSIMysticLight761Controller::SetZoneColor
     }
 }
 
-void set_data_color(FeaturePacket_Zone_761 * packet, int index, unsigned char color_val  )
+void set_data_color(FeaturePacket_Zone_761 * packet, std::size_t index, unsigned char color_val  )
 {
     if(packet == nullptr)
     {
@@ -411,13 +431,12 @@ void set_data_color(FeaturePacket_Zone_761 * packet, int index, unsigned char co
 void MSIMysticLight761Controller::SetLedColor
     (
     MSI_ZONE        zone,
-    int             index,
+    std::size_t     index,
     unsigned char   red,
     unsigned char   grn,
     unsigned char   blu
     )
 {
-
     FeaturePacket_Zone_761 * ptr = nullptr;
     switch(zone)
     {
@@ -437,18 +456,14 @@ void MSIMysticLight761Controller::SetLedColor
         break;
     }
 
-    if(index >= 0)
+    std::size_t candidate_index = (index * 3);
+
+    if((candidate_index + 2) <= GetMaxDirectLeds(zone))
     {
-        int candidate_index = (index * 3);
-
-        if((candidate_index + 2) <= GetMaxDirectLeds(zone))
-        {
-            set_data_color(ptr, candidate_index,     red);
-            set_data_color(ptr, candidate_index + 1, grn);
-            set_data_color(ptr, candidate_index + 2, blu);
-        }
+        set_data_color(ptr, candidate_index,     red);
+        set_data_color(ptr, candidate_index + 1, grn);
+        set_data_color(ptr, candidate_index + 2, blu);
     }
-
 }
 
 ZoneData *MSIMysticLight761Controller::GetZoneData

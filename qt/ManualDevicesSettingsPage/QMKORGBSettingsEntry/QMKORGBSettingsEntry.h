@@ -1,5 +1,5 @@
 /*---------------------------------------------------------*\
-| QMKORGBSettingsEntry.h                             |
+| QMKORGBSettingsEntry.h                                    |
 |                                                           |
 |   User interface entry for OpenRGB QMK configuration      |
 |                                                           |
