@@ -183,7 +183,7 @@ void SinowealthKeyboardController::SetLEDsDirect(std::vector<RGBColor> colors)
         buf[tkl_keys_per_key_index[i]] = RGBGetRValue(colors[i]);
         buf[tkl_keys_per_key_index[i] + 1] = RGBGetGValue(colors[i]);
         buf[tkl_keys_per_key_index[i] + 1 + 1] = RGBGetBValue(colors[i]);
-        printf("i: %d code: %d R: %d G: %d B: %d\n", i, tkl_keys_per_key_index[i], buf[tkl_keys_per_key_index[i]], buf[tkl_keys_per_key_index[i] + 1], buf[tkl_keys_per_key_index[i] + 1 + 1]);
+        // printf("i: %d code: %d R: %d G: %d B: %d\n", i, tkl_keys_per_key_index[i], buf[tkl_keys_per_key_index[i]], buf[tkl_keys_per_key_index[i] + 1], buf[tkl_keys_per_key_index[i] + 1 + 1]);
     }
 
     /*-----------------------------------------------------*\
